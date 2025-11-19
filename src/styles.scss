@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@use "tailwindcss" as *;
+
+html,
+body {
+  background: #02012c;
+  color: #fff;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700&display=swap");
+
+body {
+  font-family: "Bricolage Grotesque", sans-serif;
+}
