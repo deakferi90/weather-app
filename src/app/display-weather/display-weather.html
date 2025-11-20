@@ -23,7 +23,7 @@
 </div>
 
 @if (sharedService.temperature() !== null) {
-<div class="relative mt-[48px]">
+<div class="relative mt-[48px] max-w-[1280px] w-full mx-auto">
   <img class="absolute" src="{{ bgPic }}" alt="" />
   <div class="absolute mt-[48px] ml-[18px]">
     <p>City: {{ sharedService.city() }}</p>
