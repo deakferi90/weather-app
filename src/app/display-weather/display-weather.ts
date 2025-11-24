@@ -8,21 +8,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './display-weather.html',
   styleUrl: './display-weather.scss',
 })
-export class DisplayWeather implements OnInit {
+export class DisplayWeather {
   bgPic = 'assets/bg-picture.png';
   sharedService = inject(WeatherData);
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.displayTimeZone();
-  }
-
   lookup(city: string) {
     this.sharedService.getCityWeather(city);
-  }
-
-  displayTimeZone() {
-    console.log(this.sharedService.dateFormatted);
   }
 }

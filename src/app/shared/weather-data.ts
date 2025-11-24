@@ -9,6 +9,10 @@ export class WeatherData {
   city = signal('');
   country = signal('');
   temperature = signal<number | null>(null);
+  apparentTemperature = signal<number | null>(null);
+  relativeHumidity = signal<number | null>(null);
+  precipitation = signal<number | null>(null);
+  wind = signal<number | null>(null);
   timezone = signal<string | null>(null);
   dateFormatted = signal<string>('');
   private datePipe = new DatePipe('en-US');
@@ -39,13 +43,18 @@ export class WeatherData {
         params: {
           latitude: result.latitude,
           longitude: result.longitude,
-          current: 'temperature_2m',
+          current:
+            'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation',
           timezone: 'auto',
         },
       })
       .toPromise();
 
     this.temperature.set(weather.current.temperature_2m);
+    this.apparentTemperature.set(weather.current.apparent_temperature);
+    this.relativeHumidity.set(weather.current.relative_humidity_2m);
+    this.wind.set(weather.current.wind_speed_10m);
+    this.precipitation.set(weather.current.precipitation);
     this.timezone.set(weather.timezone);
     const localDate = new Date(weather.current.time);
     this.dateFormatted.set(
