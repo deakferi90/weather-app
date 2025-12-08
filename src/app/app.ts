@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from '../app/header/header';
 import { DisplayWeather } from './display-weather/display-weather';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,5 @@ import { DisplayWeather } from './display-weather/display-weather';
 })
 export class App {
   protected readonly title = signal('weather-app');
+  private http = inject(HttpClient);
 }

@@ -10,11 +10,13 @@ export class WeatherData {
   country = signal('');
   temperature = signal<number | null>(null);
   apparentTemperature = signal<number | null>(null);
+  weatherCode = signal<null | number>(null);
   relativeHumidity = signal<number | null>(null);
   precipitation = signal<number | null>(null);
   wind = signal<number | null>(null);
   timezone = signal<string | null>(null);
   dateFormatted = signal<string>('');
+  weatherIcon = signal<string>('');
   private datePipe = new DatePipe('en-US');
   constructor() {}
 
@@ -34,7 +36,6 @@ export class WeatherData {
     }
 
     const result = geo.results[0];
-    console.log(result);
     this.city.set(result.name);
     this.country.set(result.country);
 
@@ -44,13 +45,14 @@ export class WeatherData {
           latitude: result.latitude,
           longitude: result.longitude,
           current:
-            'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation',
+            'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation,weather_code',
           timezone: 'auto',
         },
       })
       .toPromise();
 
     this.temperature.set(weather.current.temperature_2m);
+    this.weatherCode.set(weather.current.weather_code);
     this.apparentTemperature.set(weather.current.apparent_temperature);
     this.relativeHumidity.set(weather.current.relative_humidity_2m);
     this.wind.set(weather.current.wind_speed_10m);

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DisplayWeather } from './display-weather';
+import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
+import { WeatherData } from '../shared/weather-data';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('DisplayWeather', () => {
   let component: DisplayWeather;
@@ -8,9 +11,13 @@ describe('DisplayWeather', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DisplayWeather]
-    })
-    .compileComponents();
+      imports: [DisplayWeather, CommonModule],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(),
+        WeatherData,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DisplayWeather);
     component = fixture.componentInstance;

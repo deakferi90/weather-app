@@ -1,5 +1,14 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { App } from './app/app';
+import { appConfig } from './app/app.config';
+import { provideZonelessChangeDetection } from '@angular/core';
 
-bootstrapApplication(App, appConfig).catch((err) => console.error(err));
+const isProduction = true;
+
+bootstrapApplication(App, {
+  ...appConfig,
+  providers: [
+    ...(appConfig.providers || []),
+    ...(isProduction ? [provideZonelessChangeDetection()] : []),
+  ],
+}).catch((err) => console.error(err));

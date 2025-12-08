@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-display-weather',
   imports: [CommonModule],
   templateUrl: './display-weather.html',
-  styleUrl: './display-weather.scss',
+  styleUrls: ['./display-weather.scss'],
 })
 export class DisplayWeather {
   bgPic = 'assets/bg-picture.png';
