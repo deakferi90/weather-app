@@ -20,6 +20,35 @@ export class WeatherData {
   private datePipe = new DatePipe('en-US');
   constructor() {}
 
+  private weatherCodeToIcon: Record<number, string> = {
+    0: 'assets/sunny.png',
+    1: 'assets/cloudy_sunny.png',
+    2: 'assets/cloudy_sunny.png',
+    3: 'assets/cloudy.png',
+    45: 'assets/fog.png',
+    48: 'assets/fog.png',
+    51: 'assets/cloudy_sunny.png',
+    53: 'assets/cloudy_sunny.png',
+    55: 'assets/cloudy_sunny.png',
+    61: 'assets/cloudy.png',
+    63: 'assets/cloudy.png',
+    65: 'assets/cloudy.png',
+    66: 'assets/cloudy.png',
+    67: 'assets/cloudy.png',
+    71: 'assets/snow.png',
+    73: 'assets/snow.png',
+    75: 'assets/snow.png',
+    77: 'assets/snow.png',
+    80: 'assets/cloudy.png',
+    81: 'assets/cloudy.png',
+    82: 'assets/cloudy.png',
+    85: 'assets/snow.png',
+    86: 'assets/snow.png',
+    95: 'assets/storm.png',
+    96: 'assets/storm.png',
+    99: 'assets/storm.png',
+  };
+
   formatDate(date: Date): string | null {
     return this.datePipe.transform(date, 'short');
   }
@@ -58,6 +87,12 @@ export class WeatherData {
     this.wind.set(weather.current.wind_speed_10m);
     this.precipitation.set(weather.current.precipitation);
     this.timezone.set(weather.timezone);
+
+    const icon =
+      this.weatherCodeToIcon[weather.current.weather_code] ||
+      'assets/sunny.png';
+    this.weatherIcon.set(icon);
+
     const localDate = new Date(weather.current.time);
     this.dateFormatted.set(
       this.datePipe.transform(localDate, 'EEEE, MMM dd yyyy', weather.timezone)!
