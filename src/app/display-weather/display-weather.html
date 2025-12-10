@@ -81,7 +81,7 @@
       <div class="grid grid-flow-col auto-cols-fr gap-4 overflow-x-auto">
         @for (d of sharedService.dailyForecast(); track $index) {
         <div class="bg-[#262540] p-1 rounded-xl text-center pt-2">
-          <p class="mb-1">{{ sharedService.shortDayName() }}</p>
+          <p class="mb-1">{{ d.date | date : "EEEE" | slice : 0 : 3 }}</p>
           <img [src]="d.icon" class="w-10 mx-auto my-2" />
           <div class="flex justify-around">
             <div class="text-lg">{{ d.max }}°</div>
