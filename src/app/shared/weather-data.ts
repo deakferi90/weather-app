@@ -74,7 +74,8 @@ export class WeatherData {
           latitude: result.latitude,
           longitude: result.longitude,
           current:
-            'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation,weather_code',
+            'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code',
+          hourly: 'precipitation',
           timezone: 'auto',
         },
       })
@@ -85,8 +86,21 @@ export class WeatherData {
     this.apparentTemperature.set(weather.current.apparent_temperature);
     this.relativeHumidity.set(weather.current.relative_humidity_2m);
     this.wind.set(weather.current.wind_speed_10m);
-    this.precipitation.set(weather.current.precipitation);
-    this.timezone.set(weather.timezone);
+    const current = new Date(weather.current.time);
+
+    let closestIndex = 0;
+    let smallestDiff = Infinity;
+
+    for (let i = 0; i < weather.hourly.time.length; i++) {
+      const time = new Date(weather.hourly.time[i]);
+      const diff = Math.abs(time.getTime() - current.getTime());
+      if (diff < smallestDiff) {
+        smallestDiff = diff;
+        closestIndex = i;
+      }
+    }
+
+    this.precipitation.set(weather.hourly.precipitation[closestIndex]);
 
     const icon =
       this.weatherCodeToIcon[weather.current.weather_code] ||
