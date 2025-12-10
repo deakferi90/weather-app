@@ -37,7 +37,7 @@
           </p>
           <p class="truncate">{{ sharedService.dateFormatted() }}</p>
         </div>
-        <div class="flex items-center gap-[20px]">
+        <div class="flex items-center gap-[30px]">
           <img
             [src]="sharedService.weatherIcon()"
             alt="Weather Icon"
@@ -51,31 +51,64 @@
       class="relative mt-[48px] flex gap-[24px] max-w-[1280px] w-full mx-auto"
     >
       <div
-        class="p-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Feels like</p>
         <p class="text-4xl">{{ sharedService.apparentTemperature() }}°</p>
       </div>
       <div
-        class="p-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Humidity</p>
         <p class="text-4xl">{{ sharedService.relativeHumidity() }}%</p>
       </div>
       <div
-        class="p-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Wind</p>
         <p class="text-4xl">{{ sharedService.wind() }}km/h</p>
       </div>
       <div
-        class="p-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Precipitation</p>
         <p class="text-4xl">{{ sharedService.precipitation() }}mm</p>
       </div>
     </div>
+    <div class="p-1 mt-8 rounded-xl min-w-[110px] text-center">
+      <h2 class="text-xl text-left mb-4">Daily forecast</h2>
+
+      <div class="grid grid-flow-col auto-cols-fr gap-4 overflow-x-auto">
+        @for (d of sharedService.dailyForecast(); track $index) {
+        <div class="bg-[#262540] p-1 rounded-xl text-center pt-2">
+          <p class="mb-1">{{ d.date | date : "EEEE" }}</p>
+          <img [src]="d.icon" class="w-10 mx-auto my-2" />
+          <div class="flex justify-around">
+            <div class="text-lg">{{ d.max }}°</div>
+            <div class="text-lg">{{ d.min }}°</div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
   </div>
-  <div class="mt-[48px]">Feri is learning Angular</div>
+
+  <div class="mt-[48px] w-full text-white flex flex-col gap-10">
+    <div class="bg-[#262540] p-4 rounded-xl min-w-[110px] text-center">
+      <h2 class="text-2xl font-semibold mb-4">Hourly Forecast</h2>
+
+      <div class="py-2">
+        @for (h of sharedService.hourlyForecast(); track $index) {
+        <div
+          class="bg-[#262540] w-fit p-4 rounded-xl min-w-[110px] text-center"
+        >
+          <p>{{ h.time | date : "HH:mm" }}</p>
+          <img [src]="h.icon" class="w-10 mx-auto my-2" />
+          <p class="text-xl">{{ h.temp }}°</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
 </div>
 }
