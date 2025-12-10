@@ -11,3 +11,8 @@ body {
 body {
   font-family: "Bricolage Grotesque", sans-serif;
 }
+
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch; /* momentum scroll on touch devices */
+  scroll-behavior: smooth; /* smooth scrolling */
+}

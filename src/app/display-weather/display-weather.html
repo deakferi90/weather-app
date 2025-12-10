@@ -24,7 +24,7 @@
 
 @if (sharedService.temperature() !== null) {
 <div class="flex gap-[30px] max-w-[1280px] mx-auto w-full">
-  <div class="mt-[48px]">
+  <div class="mt-[48px] flex-1">
     <div class="relative max-w-[1280px] w-full mx-auto">
       <img class="h-full object-cover" src="{{ bgPic }}" alt="" />
 
@@ -51,25 +51,25 @@
       class="relative mt-[48px] flex gap-[24px] max-w-[1280px] w-full mx-auto"
     >
       <div
-        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="px-5 py-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Feels like</p>
         <p class="text-4xl">{{ sharedService.apparentTemperature() }}°</p>
       </div>
       <div
-        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="px-5 py-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Humidity</p>
         <p class="text-4xl">{{ sharedService.relativeHumidity() }}%</p>
       </div>
       <div
-        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="px-5 py-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Wind</p>
         <p class="text-4xl">{{ sharedService.wind() }}km/h</p>
       </div>
       <div
-        class="p-1 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
+        class="px-5 py-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
       >
         <p>Precipitation</p>
         <p class="text-4xl">{{ sharedService.precipitation() }}mm</p>
@@ -93,17 +93,19 @@
     </div>
   </div>
 
-  <div class="mt-[48px] w-full text-white flex flex-col gap-10">
+  <div class="mt-[48px] w-full text-white flex flex-col gap-10 flex-1">
     <div class="bg-[#262540] p-4 rounded-xl min-w-[110px] text-center">
-      <h2 class="text-2xl font-semibold mb-4">Hourly forecast</h2>
+      <h2 class="text-xl text-left font-semibold">Hourly forecast</h2>
 
-      <div class="py-2">
+      <div class="py-2 h-[636px] overflow-auto smooth-scroll momentum-scroll">
         @for (h of sharedService.hourlyForecast(); track $index) {
         <div
-          class="bg-[#262540] w-fit p-4 rounded-xl min-w-[110px] text-center"
+          class="bg-[#302F4A] h-[60px] mx-0 my-4 py-0 px-[19px] w-fit pt-1.5 pb-1.5 rounded-xl min-w-[110px] text-center w-full flex items-center justify-between"
         >
-          <p>{{ h.time | date : "HH:mm" }}</p>
-          <img [src]="h.icon" class="w-10 mx-auto my-2" />
+          <div class="flex items-center gap-4">
+            <img [src]="h.icon" class="w-10 mx-auto my-2" />
+            <p>{{ h.time | date : "h a" }}</p>
+          </div>
           <p class="text-xl">{{ h.temp }}°</p>
         </div>
         }
