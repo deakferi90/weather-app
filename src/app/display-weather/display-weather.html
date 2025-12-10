@@ -75,13 +75,13 @@
         <p class="text-4xl">{{ sharedService.precipitation() }}mm</p>
       </div>
     </div>
-    <div class="p-1 mt-8 rounded-xl min-w-[110px] text-center">
-      <h2 class="text-xl text-left mb-4">Daily forecast</h2>
+    <div class="p-1 mt-4 rounded-xl min-w-[110px] text-center">
+      <h2 class="text-xl text-left font-semibold mb-4">Daily forecast</h2>
 
       <div class="grid grid-flow-col auto-cols-fr gap-4 overflow-x-auto">
         @for (d of sharedService.dailyForecast(); track $index) {
         <div class="bg-[#262540] p-1 rounded-xl text-center pt-2">
-          <p class="mb-1">{{ d.date | date : "EEEE" }}</p>
+          <p class="mb-1">{{ sharedService.shortDayName() }}</p>
           <img [src]="d.icon" class="w-10 mx-auto my-2" />
           <div class="flex justify-around">
             <div class="text-lg">{{ d.max }}°</div>
@@ -95,7 +95,7 @@
 
   <div class="mt-[48px] w-full text-white flex flex-col gap-10">
     <div class="bg-[#262540] p-4 rounded-xl min-w-[110px] text-center">
-      <h2 class="text-2xl font-semibold mb-4">Hourly Forecast</h2>
+      <h2 class="text-2xl font-semibold mb-4">Hourly forecast</h2>
 
       <div class="py-2">
         @for (h of sharedService.hourlyForecast(); track $index) {

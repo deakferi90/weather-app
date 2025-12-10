@@ -18,6 +18,7 @@ export class WeatherData {
   wind = signal<number | null>(null);
   timezone = signal<string | null>(null);
   dateFormatted = signal('');
+  shortDayName = signal('');
   weatherIcon = signal('');
 
   // Forecasts
@@ -95,9 +96,18 @@ export class WeatherData {
 
     // Date
     const date = new Date(weather.current.time);
-    this.dateFormatted.set(
+    const fullDate = this.dateFormatted.set(
       this.datePipe.transform(date, 'EEEE, MMM dd yyyy', weather.timezone)!
     );
+
+    const fullD = this.datePipe.transform(
+      date,
+      'EEEE, MMM dd yyyy',
+      weather.timezone
+    )!;
+
+    const shorenedDayName = fullD.substring(0, 3);
+    this.shortDayName.set(shorenedDayName);
 
     // Icon
     this.weatherIcon.set(this.weatherCodeToIcon[weather.current.weather_code]);
