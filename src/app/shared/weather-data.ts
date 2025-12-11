@@ -20,8 +20,13 @@ export class WeatherData {
   dateFormatted = signal('');
   weatherIcon = signal('');
 
-  // Forecasts
+  // Hourly
+  hourlyDays: string[] = [];
+  selectedDay = signal('');
+  hoursByDay: Record<string, any[]> = {};
   hourlyForecast = signal<any[]>([]);
+
+  // Daily
   dailyForecast = signal<any[]>([]);
 
   private weatherCodeToIcon: Record<number, string> = {
@@ -90,27 +95,16 @@ export class WeatherData {
     this.wind.set(weather.current.wind_speed_10m);
     this.timezone.set(weather.timezone);
 
-    // Precipitation (closest hour)
     this.precipitation.set(this.getClosestHourly(weather));
 
-    // Date
     const date = new Date(weather.current.time);
     this.dateFormatted.set(
       this.datePipe.transform(date, 'EEEE, MMM dd yyyy', weather.timezone)!
     );
 
-    // Icon
     this.weatherIcon.set(this.weatherCodeToIcon[weather.current.weather_code]);
 
-    // Hourly forecast
-    const now = new Date();
-
-    // find current hour index
-    const currentHour = weather.hourly.time.findIndex((t: string) => {
-      return new Date(t).getHours() === now.getHours();
-    });
-
-    // build hourly array
+    // Build hourly array
     const hourly = weather.hourly.time.map((t: string, i: number) => ({
       time: t,
       temp: weather.hourly.temperature_2m[i],
@@ -119,10 +113,25 @@ export class WeatherData {
       icon: this.weatherCodeToIcon[weather.hourly.weather_code[i]],
     }));
 
-    // show only next 8 hours
-    const start = currentHour !== -1 ? currentHour : 0;
+    // Group by day YYYY-MM-DD
+    const hoursByDay: Record<string, any[]> = {};
 
-    this.hourlyForecast.set(hourly.slice(start, start + 24));
+    hourly.forEach((h: { time: string }) => {
+      const dayKey = h.time.split('T')[0];
+      if (!hoursByDay[dayKey]) hoursByDay[dayKey] = [];
+      hoursByDay[dayKey].push(h);
+    });
+
+    this.hoursByDay = hoursByDay;
+
+    // Populate day list
+    this.hourlyDays = Object.keys(hoursByDay);
+
+    // Default selected day
+    this.selectedDay.set(this.hourlyDays[0]);
+
+    // Show today's hours initially
+    this.updateSelectedDayForecast();
 
     // Daily forecast
     const daily = weather.daily.time.map((t: string, i: number) => ({
@@ -133,7 +142,21 @@ export class WeatherData {
       code: weather.daily.weather_code[i],
       icon: this.weatherCodeToIcon[weather.daily.weather_code[i]],
     }));
+
     this.dailyForecast.set(daily);
+  }
+
+  // ⬅️ **IMPORTANT FIX**
+  updateSelectedDayForecast() {
+    const selected = this.selectedDay();
+    if (selected && this.hoursByDay[selected]) {
+      this.hourlyForecast.set(this.hoursByDay[selected]);
+    }
+  }
+
+  selectDay(day: string) {
+    this.selectedDay.set(day);
+    this.hourlyForecast.set(this.hoursByDay[day] || []);
   }
 
   private getClosestHourly(weather: any): number {

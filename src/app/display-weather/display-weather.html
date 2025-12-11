@@ -48,7 +48,7 @@
       </div>
     </div>
     <div
-      class="relative mt-[48px] flex gap-[24px] max-w-[1280px] w-full mx-auto"
+      class="relative mt-[38px] flex gap-[24px] max-w-[1280px] w-full mx-auto"
     >
       <div
         class="px-5 py-4 text-white max-w-[60%] w-[182px] h-[118px] rounded-xl bg-[#262540] flex justify-between flex-col"
@@ -75,12 +75,14 @@
         <p class="text-4xl">{{ sharedService.precipitation() }}mm</p>
       </div>
     </div>
-    <div class="p-2 mt-16 rounded-xl min-w-[110px] text-center">
+    <div class="p-2 mt-10 rounded-xl min-w-[110px] text-center">
       <h2 class="text-xl text-left font-semibold mb-6">Daily forecast</h2>
 
       <div class="grid grid-flow-col auto-cols-fr gap-4 overflow-x-auto">
         @for (d of sharedService.dailyForecast(); track $index) {
-        <div class="bg-[#262540] p-1 rounded-xl text-center pt-2">
+        <div
+          class="bg-[#262540] h-[165px] p-1 rounded-xl text-center pt-2 flex flex-col justify-around"
+        >
           <p class="mb-1">{{ d.date | date : "EEEE" | slice : 0 : 3 }}</p>
           <img [src]="d.icon" class="w-10 mx-auto my-2" />
           <div class="flex justify-around">
@@ -94,13 +96,53 @@
   </div>
 
   <div class="mt-[48px] w-full text-white flex flex-col gap-10 flex-1">
-    <div class="bg-[#262540] p-4 rounded-xl min-w-[110px] text-center">
-      <h2 class="text-xl text-left font-semibold">Hourly forecast</h2>
+    <div class="bg-[#262540] rounded-xl min-w-[110px] text-center">
+      <div class="p-4 flex justify-between items-center">
+        <h2 class="text-xl font-semibold">Hourly forecast</h2>
 
-      <div class="py-2 h-[636px] overflow-auto smooth-scroll momentum-scroll">
+        <!-- Day selector -->
+        <div class="relative inline-block w-[180px]">
+          <select
+            class="block w-full h-[39px] bg-[#302F4A] text-white px-3 pr-10 rounded-xl border border-[#3A3958] focus:outline-none focus:ring-2 focus:ring-[#5755A5] appearance-none cursor-pointer hover:bg-[#3A3958] transition-color"
+            [ngModel]="sharedService.selectedDay()"
+            (ngModelChange)="sharedService.selectDay($event)"
+          >
+            <option
+              *ngFor="let d of sharedService.hourlyDays"
+              [value]="d"
+              class="bg-[#302F4A] text-white"
+            >
+              {{ d | date : "EEE, MMM d" }}
+            </option>
+          </select>
+
+          <!-- Custom arrow -->
+          <div
+            class="absolute inset-y-0 right-3 flex items-center pointer-events-none"
+          >
+            <svg
+              class="w-4 h-4 text-gray-300"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="h-[636px] p-4 overflow-auto smooth-scroll momentum-scroll hourly-scroll"
+      >
         @for (h of sharedService.hourlyForecast(); track $index) {
         <div
-          class="bg-[#302F4A] h-[60px] mx-0 my-4.5 py-0 px-[19px] w-fit pt-1.5 pb-1.5 rounded-xl min-w-[110px] text-center w-full flex items-center justify-between"
+          class="bg-[#302F4A] h-[60px] mx-0 my-4 py-0 px-[19px] w-fit pt-1.5 pb-1.5 rounded-xl min-w-[110px] text-center w-full flex items-center justify-between"
         >
           <div class="flex items-center gap-4">
             <img [src]="h.icon" class="w-10 mx-auto my-2" />
