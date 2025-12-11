@@ -16,7 +16,7 @@
   />
   <button
     (click)="lookup(c.value)"
-    class="bg-[#4658D9] py-[16px] px-[30px] rounded-[10px]"
+    class="bg-[#4658D9] py-[16px] px-[30px] rounded-[10px] cursor-pointer"
   >
     Search
   </button>
@@ -100,21 +100,43 @@
       <div class="p-4 flex justify-between items-center">
         <h2 class="text-xl font-semibold">Hourly forecast</h2>
 
-        <!-- Day selector -->
         <div class="relative inline-block w-[180px]">
-          <select
-            class="block w-full h-[39px] bg-[#302F4A] text-white px-3 pr-10 rounded-xl border border-[#3A3958] focus:outline-none focus:ring-2 focus:ring-[#5755A5] appearance-none cursor-pointer hover:bg-[#3A3958] transition-color"
-            [ngModel]="sharedService.selectedDay()"
-            (ngModelChange)="sharedService.selectDay($event)"
-          >
-            <option
-              *ngFor="let d of sharedService.hourlyDays"
-              [value]="d"
-              class="bg-[#302F4A] text-white"
+          <div class="relative inline-block w-[180px]" #dropdown>
+            <!-- Selected day button -->
+            <button
+              (click)="open = !open"
+              class="w-full h-[40px] bg-[#302F4A] text-white px-3 rounded-xl border border-[#3A3958] flex justify-between items-center w-full"
             >
-              {{ d | date : "EEE, MMM d" }}
-            </option>
-          </select>
+              <span>{{ sharedService.selectedDay() | date : "EEEE" }}</span>
+              <svg
+                class="w-4 h-4 text-gray-300"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div
+              *ngIf="open"
+              class="absolute mt-1 w-full bg-[#302F4A] rounded-xl shadow-lg z-10"
+            >
+              <button
+                *ngFor="let d of sharedService.hourlyDays"
+                (click)="sharedService.selectDay(d); open = false"
+                class="w-full h-[40px] px-3 text-left flex items-center gap-2 rounded-xl hover:bg-[#3A3958] transition-colors m-[6px] custom-w cursor-pointer"
+              >
+                <span>{{ d | date : "EEEE" }}</span>
+              </button>
+            </div>
+          </div>
 
           <!-- Custom arrow -->
           <div

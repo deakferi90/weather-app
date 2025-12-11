@@ -27,3 +27,7 @@
   scrollbar-width: thin;
   scrollbar-color: #302f4a transparent;
 }
+
+.custom-w {
+  width: -webkit-fill-available !important;
+}

@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class DisplayWeather {
   bgPic = 'assets/bg-picture.png';
+  open: boolean = false;
   sharedService = inject(WeatherData);
 
   constructor() {}
