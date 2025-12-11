@@ -23,7 +23,7 @@
 </div>
 
 @if (sharedService.temperature() !== null) {
-<div class="flex gap-[30px] max-w-[1280px] mx-auto w-full">
+<div class="flex gap-[30px] max-w-[1280px] mx-auto w-full items-stretch">
   <div class="mt-[48px] flex-1">
     <div class="relative max-w-[1280px] w-full mx-auto">
       <img class="h-full object-cover" src="{{ bgPic }}" alt="" />
@@ -75,8 +75,8 @@
         <p class="text-4xl">{{ sharedService.precipitation() }}mm</p>
       </div>
     </div>
-    <div class="p-1 mt-4 rounded-xl min-w-[110px] text-center">
-      <h2 class="text-xl text-left font-semibold mb-4">Daily forecast</h2>
+    <div class="p-2 mt-16 rounded-xl min-w-[110px] text-center">
+      <h2 class="text-xl text-left font-semibold mb-6">Daily forecast</h2>
 
       <div class="grid grid-flow-col auto-cols-fr gap-4 overflow-x-auto">
         @for (d of sharedService.dailyForecast(); track $index) {
@@ -100,7 +100,7 @@
       <div class="py-2 h-[636px] overflow-auto smooth-scroll momentum-scroll">
         @for (h of sharedService.hourlyForecast(); track $index) {
         <div
-          class="bg-[#302F4A] h-[60px] mx-0 my-4 py-0 px-[19px] w-fit pt-1.5 pb-1.5 rounded-xl min-w-[110px] text-center w-full flex items-center justify-between"
+          class="bg-[#302F4A] h-[60px] mx-0 my-4.5 py-0 px-[19px] w-fit pt-1.5 pb-1.5 rounded-xl min-w-[110px] text-center w-full flex items-center justify-between"
         >
           <div class="flex items-center gap-4">
             <img [src]="h.icon" class="w-10 mx-auto my-2" />

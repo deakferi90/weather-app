@@ -103,6 +103,14 @@ export class WeatherData {
     this.weatherIcon.set(this.weatherCodeToIcon[weather.current.weather_code]);
 
     // Hourly forecast
+    const now = new Date();
+
+    // find current hour index
+    const currentHour = weather.hourly.time.findIndex((t: string) => {
+      return new Date(t).getHours() === now.getHours();
+    });
+
+    // build hourly array
     const hourly = weather.hourly.time.map((t: string, i: number) => ({
       time: t,
       temp: weather.hourly.temperature_2m[i],
@@ -110,7 +118,11 @@ export class WeatherData {
       code: weather.hourly.weather_code[i],
       icon: this.weatherCodeToIcon[weather.hourly.weather_code[i]],
     }));
-    this.hourlyForecast.set(hourly.slice(0, 24));
+
+    // show only next 8 hours
+    const start = currentHour !== -1 ? currentHour : 0;
+
+    this.hourlyForecast.set(hourly.slice(start, start + 24));
 
     // Daily forecast
     const daily = weather.daily.time.map((t: string, i: number) => ({
