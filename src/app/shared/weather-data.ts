@@ -87,7 +87,6 @@ export class WeatherData {
       })
       .toPromise();
 
-    // Set current data
     this.temperature.set(weather.current.temperature_2m);
     this.apparentTemperature.set(weather.current.apparent_temperature);
     this.relativeHumidity.set(weather.current.relative_humidity_2m);
@@ -104,7 +103,6 @@ export class WeatherData {
 
     this.weatherIcon.set(this.weatherCodeToIcon[weather.current.weather_code]);
 
-    // Build hourly array
     const hourly = weather.hourly.time.map((t: string, i: number) => ({
       time: t,
       temp: weather.hourly.temperature_2m[i],
@@ -113,7 +111,6 @@ export class WeatherData {
       icon: this.weatherCodeToIcon[weather.hourly.weather_code[i]],
     }));
 
-    // Group by day YYYY-MM-DD
     const hoursByDay: Record<string, any[]> = {};
 
     hourly.forEach((h: { time: string }) => {
@@ -124,16 +121,12 @@ export class WeatherData {
 
     this.hoursByDay = hoursByDay;
 
-    // Populate day list
     this.hourlyDays = Object.keys(hoursByDay);
 
-    // Default selected day
     this.selectedDay.set(this.hourlyDays[0]);
 
-    // Show today's hours initially
     this.updateSelectedDayForecast();
 
-    // Daily forecast
     const daily = weather.daily.time.map((t: string, i: number) => ({
       date: t,
       max: weather.daily.temperature_2m_max[i],
