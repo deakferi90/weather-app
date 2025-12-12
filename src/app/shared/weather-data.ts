@@ -153,20 +153,20 @@ export class WeatherData {
   }
 
   private getClosestHourly(weather: any): number {
-    const current = new Date(weather.current.time);
-
-    let closestIndex = 0;
-    let smallestDiff = Infinity;
+    const currentTime = new Date(weather.current.time).getTime();
 
     for (let i = 0; i < weather.hourly.time.length; i++) {
-      const t = new Date(weather.hourly.time[i]);
-      const diff = Math.abs(t.getTime() - current.getTime());
-      if (diff < smallestDiff) {
-        smallestDiff = diff;
-        closestIndex = i;
+      const t = new Date(weather.hourly.time[i]).getTime();
+
+      // return the first hour at or after "now"
+      if (t >= currentTime) {
+        return weather.hourly.precipitation[i];
       }
     }
 
-    return weather.hourly.precipitation[closestIndex];
+    // fallback (if all hours are before current time)
+    return weather.hourly.precipitation[
+      weather.hourly.precipitation.length - 1
+    ];
   }
 }
